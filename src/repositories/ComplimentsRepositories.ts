@@ -1,0 +1,5 @@
+class ComplimentsRepositories {
+
+}
+
+export { ComplimentsRepositories }
