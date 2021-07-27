@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken"
 
+interface IPayload {
+    sub: string;
+}
+
 export function ensureAuthenticated(
     request: Request, 
     response: Response, 
@@ -18,13 +22,15 @@ export function ensureAuthenticated(
     const [, token] = authToken.split(" ");
 
     try {
-        const decode = verify(token, "acbe660add6be01100bae347a3b9fef8");
-        console.log(decode);
+        const { sub } = verify(token, "acbe660add6be01100bae347a3b9fef8") as IPayload;
+
+        // Recuperar informações do usuário
+        request.user_id = sub;
+
+        return next();
     } catch(err) {
         return response.status(401).end();
     }
-
-    // Recuperar informações do usuário
 
     return next();
 }
