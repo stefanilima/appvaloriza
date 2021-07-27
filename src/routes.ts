@@ -2,6 +2,7 @@ import { Router } from "express";
 import { CreateUserController } from "./controllers/CreateUserController";
 import { CreateTagController } from "./controllers/CreateTagController";
 import { ensureAdmin } from "./middlewares/ensureAdmin";
+import { ensureAuthenticated } from "./middlewares/ensureAuthenticated";
 import { AuthenticateUserController } from "./controllers/AuthenticateUserController";
 import { CreateComplimentsController } from "./controllers/CreateComplimentsController";
 
@@ -13,7 +14,7 @@ const authenticateUserController = new AuthenticateUserController();
 const createComplimentsController = new CreateComplimentsController();
 
 router.post("/users", createUserController.handle);
-router.post("/tags", ensureAdmin, createTagController.handle);
+router.post("/tags", ensureAuthenticated, ensureAdmin, createTagController.handle);
 router.post("/login", authenticateUserController.handle);
 router.post("/compliments", createComplimentsController.handle);
 
